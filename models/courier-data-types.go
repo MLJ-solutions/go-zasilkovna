@@ -1,13 +1,13 @@
 package models
 
 type CourierNumbers struct {
-	CourierNumber string `json:"courier_number_id"`
+	CourierNumber string `xml:"courier_number_id" validate:"required"`
 }
 
 type CourierBarcodes struct {
-	CourierBarcode string `json:"courier_barcode_id"`
+	CourierBarcode string `xml:"courier_barcode_id" validate:"required"`
 }
 
 type CourierTrackingNumbers struct {
-	CourierTrackingNumber string `json:"courier_tracking_number"`
+	CourierTrackingNumber string `xml:"courier_tracking_number" validate:"required"`
 }

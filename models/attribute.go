@@ -1,10 +1,36 @@
 package models
 
+import (
+	"fmt"
+	"gopkg.in/go-playground/validator.v9"
+)
+
 type AttributeCollection struct {
-	Attribute Attribute `json:"attribute"`
+	Attribute Attribute `xml:"attribute"`
 }
 
 type Attribute struct {
-	Key   string `json:"key"`
-	Value string `json:"value"`
+	Key   string `xml:"key" validate:"required"`
+	Value string `xml:"value" validate:"required"`
+}
+
+func ValidateAttribute(key string, value string) (isValidated bool, errorsArray []validator.FieldError) {
+	fmt.Println("---Attribute---")
+
+	v := validator.New()
+	a := Attribute{
+		Key:   key,
+		Value: value,
+	}
+	err := v.Struct(a)
+	if err != nil { // If err contains errors, params are not validated
+		isValidated = false
+		for _, e := range err.(validator.ValidationErrors) {
+			errorsArray = append(errorsArray, e)
+		}
+		return
+	} else {
+		isValidated = true
+		return
+	}
 }

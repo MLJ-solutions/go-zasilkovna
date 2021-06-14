@@ -1,9 +1,9 @@
 package models
 
 type ItemCollection struct {
-	Item []Item `json:"item"`
+	Item Item `xml:"item"`
 }
 
 type Item struct { // Item represent one kind of thing in the packet. Is an array of type Attribute.
-	Attribute Attribute `json:"attribute"`
+	Attribute Attribute `xml:"attribute"`
 }
