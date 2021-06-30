@@ -11,6 +11,14 @@ type Size struct {
 	Height int `xml:"height" validate:"required,max=120,min=1"`
 }
 
+func NewSize(Length int, Width int, Height int) *Size {
+	return &Size{
+		Length: Length,
+		Width:  Width,
+		Height: Height,
+	}
+}
+
 func ValidateSize(s Size) (isValidated bool, errorsArray []validator.FieldError) {
 	fmt.Println("---Size---")
 

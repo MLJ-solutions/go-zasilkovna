@@ -1,23 +1,66 @@
 package models
 
 import (
+	"encoding/xml"
 	"fmt"
 	"gopkg.in/go-playground/validator.v9"
 	"time"
 )
 
+type PacketStatus struct {
+	XMLName     xml.Name `xml:"packetStatus"`
+	ApiPassword string   `xml:"apiPassword" validate:"required"`
+	PacketId    int      `xml:"packetId" validate:"required"`
+}
+
 type CurrentStatusRecord struct {
-	DateTime             ZasilkovnaDateTime `xml:"date_time" validate:"required"`
-	StatusCode           int                `xml:"status_code" validate:"required"`
-	CodeText             string             `xml:"code_text" validate:"required"`
-	StatusText           string             `xml:"status_text" validate:"required"`
-	BranchId             int                `xml:"branch_id" validate:"required"`
-	DestinationBranchId  int                `xml:"destination_branch_id" validate:"required"`
-	ExternalTrackingCode string             `xml:"external_tracking_code,omitempty"`
-	IsReturning          *bool              `xml:"is_returning" validate:"required"` // *bool bcs of required
-	StoredUntil          ZasilkovnaDate     `xml:"stored_until" validate:"required"`
-	CarrierId            int                `xml:"carrier_id,omitempty"`
-	CarrierName          string             `xml:"carrier_name,omitempty"`
+	DateTime             ZasilkovnaDateTime `xml:"dateTime" validate:"required"`
+	StatusCode           int                `xml:"statusCode" validate:"required"`
+	CodeText             string             `xml:"codeText" validate:"required"`
+	StatusText           string             `xml:"statusText" validate:"required"`
+	BranchId             int                `xml:"branchId" validate:"required"`
+	DestinationBranchId  int                `xml:"destinationBranchId" validate:"required"`
+	ExternalTrackingCode string             `xml:"externalTrackingCode,omitempty"`
+	IsReturning          *bool              `xml:"isReturning" validate:"required"` // *bool bcs of required
+	StoredUntil          ZasilkovnaDate     `xml:"storedUntil" validate:"required"`
+	CarrierId            int                `xml:"carrierId,omitempty"`
+	CarrierName          string             `xml:"carrierName,omitempty"`
+}
+
+func NewPacketStatus(apiPassword string, packetId int) *PacketStatus {
+	return &PacketStatus{ApiPassword: apiPassword, PacketId: packetId}
+}
+
+func NewCurrentStatusRecordRequired(DateTime ZasilkovnaDateTime, StatusCode int, CodeText string, StatusText string,
+	BranchId int, DestinationBranchId int, IsReturning *bool, StoredUntil ZasilkovnaDate) *CurrentStatusRecord {
+	return &CurrentStatusRecord{
+		DateTime:            DateTime,
+		StatusCode:          StatusCode,
+		CodeText:            CodeText,
+		StatusText:          StatusText,
+		BranchId:            BranchId,
+		DestinationBranchId: DestinationBranchId,
+		IsReturning:         IsReturning,
+		StoredUntil:         StoredUntil,
+	}
+}
+
+func NewCurrentStatusRecord(DateTime ZasilkovnaDateTime, StatusCode int, CodeText string, StatusText string,
+	BranchId int, DestinationBranchId int, ExternalTrackingCode string, IsReturning *bool, StoredUntil ZasilkovnaDate,
+	CarrierId int, CarrierName string) *CurrentStatusRecord {
+	return &CurrentStatusRecord{
+		DateTime:             DateTime,
+		StatusCode:           StatusCode,
+		CodeText:             CodeText,
+		StatusText:           StatusText,
+		BranchId:             BranchId,
+		DestinationBranchId:  DestinationBranchId,
+		ExternalTrackingCode: ExternalTrackingCode,
+		IsReturning:          IsReturning,
+		StoredUntil:          StoredUntil,
+		CarrierId:            CarrierId,
+		CarrierName:          CarrierName,
+	}
 }
 
 func ValidateCurrentStatusRecord() (isValidated bool, errorsArray []validator.FieldError) {

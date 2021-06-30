@@ -1,9 +1,16 @@
 package models
 
 import (
+	"encoding/xml"
 	"fmt"
 	"gopkg.in/go-playground/validator.v9"
 )
+
+type CreatePacket struct {
+	XMLName          xml.Name         `xml:"createPacket"`
+	ApiPassword      string           `xml:"apiPassword" validate:"required"`
+	PacketAttributes PacketAttributes `xml:"packetAttributes" validate:"required"`
+}
 
 type PacketAttributes struct {
 	Id                  int                   `xml:"id,omitempty"`
@@ -13,27 +20,97 @@ type PacketAttributes struct {
 	Company             string                `xml:"company,omitempty"`
 	Email               string                `xml:"email" validate:"required"`
 	Phone               string                `xml:"phone" validate:"required"`
-	AddressId           int                   `xml:"address_id" validate:"required"`
+	AddressId           int                   `xml:"addressId" validate:"required"`
 	Currency            string                `xml:"currency,omitempty"`
 	Cod                 float32               `xml:"cod,omitempty"`
 	Value               float32               `xml:"value" validate:"required"`
 	Weight              float32               `xml:"weight" validate:"required,max=10"`
-	DeliverOn           ZasilkovnaDate        `xml:"deliver_on,omitempty"`
+	DeliverOn           ZasilkovnaDate        `xml:"deliverOn,omitempty"`
 	Eshop               string                `xml:"eshop" validate:"required"`
-	AdultContent        bool                  `xml:"adult_content,omitempty"`
+	AdultContent        bool                  `xml:"adultContent,omitempty"`
 	Note                string                `xml:"note,omitempty"`
 	Street              string                `xml:"street" validate:"required"`
-	HouseNumber         string                `xml:"house_number" validate:"required"`
+	HouseNumber         string                `xml:"houseNumber" validate:"required"`
 	City                string                `xml:"city" validate:"required"`
 	Province            string                `xml:"province,omitempty"`
 	Zip                 string                `xml:"zip" validate:"required"`
-	CarrierService      string                `xml:"carrier_service,omitempty"`
-	CustomerBarcode     string                `xml:"customer_barcode,omitempty"`
-	CarrierPickupPoint  string                `xml:"carrier_pickup_point" validate:"required"`
-	CustomsDeclaration  []ItemCollection      `xml:"customs_declaration" validate:"required"`
+	CarrierService      string                `xml:"carrierService,omitempty"`
+	CustomerBarcode     string                `xml:"customerBarcode,omitempty"`
+	CarrierPickupPoint  string                `xml:"carrierPickupPoint" validate:"required"`
+	CustomsDeclaration  []ItemCollection      `xml:"customsDeclaration" validate:"required"`
 	Size                Size                  `xml:"size" validate:"required"`
-	AttributeCollection []AttributeCollection `xml:"attribute_collection" validate:"required"`
+	AttributeCollection []AttributeCollection `xml:"attributeCollection" validate:"required"`
 	Items               []ItemCollection      `xml:"items" validate:"required"`
+}
+
+func NewCreatePacket(ApiPassword string, PacketAttributes PacketAttributes) *CreatePacket {
+	return &CreatePacket{ApiPassword: ApiPassword, PacketAttributes: PacketAttributes}
+}
+
+func NewPacketAttributesRequired(Number string, Name string, Surname string, Email string, Phone string, AddressId int,
+	Value float32, Weight float32, Eshop string, Street string, HouseNumber string, City string,
+	Zip string, CarrierPickupPoint string,
+	CustomsDeclaration []ItemCollection, Size Size, AttributeCollection []AttributeCollection,
+	Items []ItemCollection) *PacketAttributes {
+	return &PacketAttributes{
+		Number:              Number,
+		Name:                Name,
+		Surname:             Surname,
+		Email:               Email,
+		Phone:               Phone,
+		AddressId:           AddressId,
+		Value:               Value,
+		Weight:              Weight,
+		Eshop:               Eshop,
+		Street:              Street,
+		HouseNumber:         HouseNumber,
+		City:                City,
+		Zip:                 Zip,
+		CarrierPickupPoint:  CarrierPickupPoint,
+		CustomsDeclaration:  CustomsDeclaration,
+		Size:                Size,
+		AttributeCollection: AttributeCollection,
+		Items:               Items,
+	}
+}
+
+func NewPacketAttributes(Id int, Number string, Name string, Surname string,
+	Company string, Email string, Phone string, AddressId int, Currency string, Cod float32,
+	Value float32, Weight float32, DeliverOn ZasilkovnaDate, Eshop string,
+	AdultContent bool, Note string, Street string, HouseNumber string, City string, Province string,
+	Zip string, CarrierService string, CustomerBarcode string, CarrierPickupPoint string,
+	CustomsDeclaration []ItemCollection, Size Size, AttributeCollection []AttributeCollection,
+	Items []ItemCollection) *PacketAttributes {
+	return &PacketAttributes{
+		Id:                  Id,
+		Number:              Number,
+		Name:                Name,
+		Surname:             Surname,
+		Company:             Company,
+		Email:               Email,
+		Phone:               Phone,
+		AddressId:           AddressId,
+		Currency:            Currency,
+		Cod:                 Cod,
+		Value:               Value,
+		Weight:              Weight,
+		DeliverOn:           DeliverOn,
+		Eshop:               Eshop,
+		AdultContent:        AdultContent,
+		Note:                Note,
+		Street:              Street,
+		HouseNumber:         HouseNumber,
+		City:                City,
+		Province:            Province,
+		Zip:                 Zip,
+		CarrierService:      CarrierService,
+		CustomerBarcode:     CustomerBarcode,
+		CarrierPickupPoint:  CarrierPickupPoint,
+		CustomsDeclaration:  CustomsDeclaration,
+		Size:                Size,
+		AttributeCollection: AttributeCollection,
+		Items:               Items,
+	}
 }
 
 func ValidatePacketAttributes() (isValidated bool, errorsArray []validator.FieldError) {

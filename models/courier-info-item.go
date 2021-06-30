@@ -1,17 +1,44 @@
 package models
 
 import (
+	"encoding/xml"
 	"fmt"
 	"gopkg.in/go-playground/validator.v9"
 )
 
+type CourierInfo struct {
+	XMLName         xml.Name          `xml:"courierInfo"`
+	CourierInfoItem []CourierInfoItem `xml:"courierInfoItem"`
+}
+
 type CourierInfoItem struct {
-	CourierId              int                      `xml:"courier_id" validate:"required"`
-	CourierName            string                   `xml:"courier_name" validate:"required"`
-	CourierNumbers         []CourierNumbers         `xml:"courier_numbers,omitempty"`
-	CourierBarcodes        []CourierBarcodes        `xml:"courier_barcodes,omitempty"`
-	CourierTrackingNumbers []CourierTrackingNumbers `xml:"courier_tracking_numbers,omitempty"`
-	CourierTrackingUrls    []CourierTrackingUrl     `xml:"courier_tracking_urls,omitempty"`
+	XMLName                xml.Name                 `xml:"courierInfoItem"`
+	CourierId              int                      `xml:"courierId" validate:"required"`
+	CourierName            string                   `xml:"courierName" validate:"required"`
+	CourierNumbers         []CourierNumbers         `xml:"courierNumbers,omitempty"`
+	CourierBarcodes        []CourierBarcodes        `xml:"courierBarcodes,omitempty"`
+	CourierTrackingNumbers []CourierTrackingNumbers `xml:"courierTrackingNumbers,omitempty"`
+	CourierTrackingUrls    []CourierTrackingUrls    `xml:"courierTrackingUrls,omitempty"`
+}
+
+func NewCourierInfoItemRequired(CourierId int, CourierName string) *CourierInfoItem {
+	return &CourierInfoItem{
+		CourierId:   CourierId,
+		CourierName: CourierName,
+	}
+}
+
+func NewCourierInfoItem(CourierId int, CourierName string, CourierNumbers []CourierNumbers,
+	CourierBarcodes []CourierBarcodes, CourierTrackingNumbers []CourierTrackingNumbers,
+	CourierTrackingUrls []CourierTrackingUrls) *CourierInfoItem {
+	return &CourierInfoItem{
+		CourierId:              CourierId,
+		CourierName:            CourierName,
+		CourierNumbers:         CourierNumbers,
+		CourierBarcodes:        CourierBarcodes,
+		CourierTrackingNumbers: CourierTrackingNumbers,
+		CourierTrackingUrls:    CourierTrackingUrls,
+	}
 }
 
 func ValidateCourierInfoItem() (isValidated bool, errorsArray []validator.FieldError) {

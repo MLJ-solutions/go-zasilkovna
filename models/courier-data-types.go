@@ -1,13 +1,18 @@
 package models
 
+import "encoding/xml"
+
 type CourierNumbers struct {
-	CourierNumber string `xml:"courier_number_id" validate:"required"`
+	XMLName       xml.Name `xml:"courierNumbers"`
+	CourierNumber string   `xml:"courierNumber" validate:"required"`
 }
 
 type CourierBarcodes struct {
-	CourierBarcode string `xml:"courier_barcode_id" validate:"required"`
+	XMLName        xml.Name `xml:"courierBarcodes"`
+	CourierBarcode string   `xml:"courierBarcode" validate:"required"`
 }
 
 type CourierTrackingNumbers struct {
-	CourierTrackingNumber string `xml:"courier_tracking_number" validate:"required"`
+	XMLName               xml.Name `xml:"courierTrackingNumbers"`
+	CourierTrackingNumber string   `xml:"courierTrackingNumber" validate:"required"`
 }
