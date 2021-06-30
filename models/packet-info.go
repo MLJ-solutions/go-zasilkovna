@@ -6,21 +6,28 @@ import (
 	"gopkg.in/go-playground/validator.v9"
 )
 
-type Response struct {
-	XMLName xml.Name `xml:"response"`
-	Status  string   `xml:"status"`
-	Result  Result   `xml:"result"`
+type PacketInfoResponse struct {
+	XMLName xml.Name         `xml:"response"`
+	Status  string           `xml:"status"`
+	Result  PacketInfoResult `xml:"result"`
 }
 
-type Result struct {
+func NewPacketInfoResponse(Status string, Result PacketInfoResult) *PacketInfoResponse {
+	return &PacketInfoResponse{
+		Status: Status,
+		Result: Result,
+	}
+}
+
+type PacketInfoResult struct {
 	XMLName             xml.Name    `xml:"result"`
 	BranchId            int         `xml:"branchId" validate:"required"`
 	InvoicedWeightGrams int         `xml:"invoicedWeightGrams"`
 	CourierInfo         CourierInfo `xml:"courierInfo"`
 }
 
-func NewResult(BranchId int, InvoicedWeightGrams int, CourierInfo CourierInfo) *Result {
-	return &Result{
+func NewPacketInfoResult(BranchId int, InvoicedWeightGrams int, CourierInfo CourierInfo) *PacketInfoResult {
+	return &PacketInfoResult{
 		BranchId:            BranchId,
 		InvoicedWeightGrams: InvoicedWeightGrams,
 		CourierInfo:         CourierInfo,
