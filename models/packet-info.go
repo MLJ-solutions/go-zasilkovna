@@ -41,10 +41,7 @@ type PacketInfo struct {
 }
 
 func NewPacketInfo(ApiPassword string, PacketId int) *PacketInfo {
-	return &PacketInfo{
-		ApiPassword: ApiPassword,
-		PacketId:    PacketId,
-	}
+	return &PacketInfo{ApiPassword: ApiPassword, PacketId: PacketId}
 }
 
 func ValidatePacketInfo() (isValidated bool, errorsArray []validator.FieldError) {

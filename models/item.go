@@ -1,10 +1,10 @@
 package models
 
 type ItemCollection struct {
-	Item Item `xml:"item"`
+	Item []Item `xml:"item"`
 }
 
-func NewItemCollection(Item Item) *ItemCollection {
+func NewItemCollection(Item []Item) *ItemCollection {
 	return &ItemCollection{
 		Item: Item,
 	}

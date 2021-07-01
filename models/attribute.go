@@ -6,10 +6,10 @@ import (
 )
 
 type AttributeCollection struct {
-	Attribute Attribute `xml:"attribute"`
+	Attribute []Attribute `xml:"attribute"`
 }
 
-func NewAttributeCollection(Attribute Attribute) *AttributeCollection {
+func NewAttributeCollection(Attribute []Attribute) *AttributeCollection {
 	return &AttributeCollection{
 		Attribute: Attribute,
 	}

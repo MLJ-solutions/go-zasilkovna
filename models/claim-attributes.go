@@ -12,6 +12,12 @@ type CreatePacketClaim struct {
 	ClaimAttributes ClaimAttributes `xml:"claimAttributes" validate:"required"`
 }
 
+type ClaimAttributesValid struct {
+	XMLName         xml.Name        `xml:"packetClaimAttributesValid"`
+	ApiPassword     string          `xml:"apiPassword" validate:"required"`
+	ClaimAttributes ClaimAttributes `xml:"claimAttributes" validate:"required"`
+}
+
 type ClaimAttributes struct {
 	Id               int     `xml:"id,omitempty"`
 	Number           string  `xml:"number" validate:"required"`
@@ -19,12 +25,19 @@ type ClaimAttributes struct {
 	Phone            string  `xml:"phone" validate:"required"`
 	Value            float32 `xml:"value" validate:"required"`
 	Currency         string  `xml:"currency,omitempty"`
-	Eshop            string  `xml:"eshop" validate:"required"` // TODO - Required when using more senders
+	Eshop            string  `xml:"eshop" validate:"required"` // Required when using more senders
 	SendLabelToEmail bool    `xml:"SendLabelToEmail,omitempty"`
 }
 
-func NewCreatePacketClaim(apiPassword string, c ClaimAttributes) *CreatePacketClaim {
-	return &CreatePacketClaim{ApiPassword: apiPassword, ClaimAttributes: c}
+func NewCreatePacketClaim(apiPassword string, ClaimAttributes ClaimAttributes) *CreatePacketClaim {
+	return &CreatePacketClaim{ApiPassword: apiPassword, ClaimAttributes: ClaimAttributes}
+}
+
+func NewClaimAttributesValid(ApiPassword string, ClaimAttributes ClaimAttributes) *ClaimAttributesValid {
+	return &ClaimAttributesValid{
+		ApiPassword:     ApiPassword,
+		ClaimAttributes: ClaimAttributes,
+	}
 }
 
 func NewClaimAttributesRequired(Id int, Number string, Email string, Phone string, Value float32,
