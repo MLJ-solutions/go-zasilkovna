@@ -1,8 +1,8 @@
 package models
 
 import (
-	"fmt"
 	"gopkg.in/go-playground/validator.v9"
+	"log"
 )
 
 type Size struct {
@@ -20,8 +20,6 @@ func NewSize(Length int, Width int, Height int) *Size {
 }
 
 func ValidateSize(s Size) (isValidated bool, errorsArray []validator.FieldError) {
-	fmt.Println("---Size---")
-
 	v := validator.New()
 	a := Size{
 		Length: s.Length,
@@ -40,7 +38,7 @@ func ValidateSize(s Size) (isValidated bool, errorsArray []validator.FieldError)
 		return
 	} else if !isSumSizeOk {
 		isValidated = false
-		fmt.Println("Sum of all 3 sizes is greater than 150!!!")
+		log.Println("Sum of all 3 sizes is greater than 150!!!")
 		return
 	} else {
 		isValidated = true

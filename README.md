@@ -6,7 +6,7 @@
 package main
 
 import (
-	"fmt"
+	"log"
 	"go-zasilkovna/models"
 )
 
@@ -15,7 +15,7 @@ func main() {
 		Creds: NewCredentials("API KEY"),
 	})
 
-	fmt.Println(client)
+	log.Println(client)
 }
 ```
 
@@ -25,7 +25,7 @@ func main() {
 package main
 
 import (
-	"fmt"
+	"log"
 	"go-zasilkovna/models"
 )
 
@@ -34,11 +34,11 @@ func main() {
 		Creds: NewCredentials("API KEY"),
 	})
 
-	fmt.Println(client)
+	log.Println(client)
 
 	a, err := client.PacketInfo(1234567890) //packetId
-	fmt.Println(a)
-	fmt.Println(err)
+	log.Println(a)
+	log.Println(err)
 }
 ```
 
@@ -48,7 +48,7 @@ func main() {
 package main
 
 import (
-	"fmt"
+	"log"
 	"go-zasilkovna/models"
 )
 
@@ -57,7 +57,7 @@ func main() {
 		Creds: NewCredentials("API KEY"),
 	})
 
-	fmt.Println(client)
+	log.Println(client)
 
 	a, err := client.PacketAttributesValid(models.PacketAttributes{
 		Number:    "123abc",
@@ -69,8 +69,8 @@ func main() {
 		Value:     100.00,
 		Eshop:     "my.eshop",
 	})
-	fmt.Println(a)
-	fmt.Println(err)
+	log.Println(a)
+	log.Println(err)
 }
 ```
 
@@ -80,7 +80,7 @@ func main() {
 package main
 
 import (
-	"fmt"
+	"log"
 	"go-zasilkovna/models"
 )
 
@@ -89,7 +89,7 @@ func main() {
 		Creds: NewCredentials("API KEY"),
 	})
 
-	fmt.Println(client)
+	log.Println(client)
 
 	a, err := client.CreatePacket(models.PacketAttributes{
 		Number:    "123abc",
@@ -101,7 +101,7 @@ func main() {
 		Value:     100.00,
 		Eshop:     "my.eshop",
 	})
-	fmt.Println(a)
-	fmt.Println(err)
+	log.Println(a)
+	log.Println(err)
 }
 ```

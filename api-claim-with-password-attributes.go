@@ -3,9 +3,9 @@ package main
 import (
 	"bytes"
 	"encoding/xml"
-	"fmt"
 	"go-zasilkovna/models"
 	"io"
+	"log"
 	"net/http"
 )
 
@@ -22,7 +22,7 @@ func (c Client) CreatePacketClaimWithPassword(createPacketClaimWithPassword mode
 		return models.PacketDetail{}, err
 	}
 
-	fmt.Println(resp)
+	log.Println(resp)
 	body, err := io.ReadAll(resp.Body)
 	defer closeResponse(resp)
 
@@ -33,7 +33,7 @@ func (c Client) CreatePacketClaimWithPassword(createPacketClaimWithPassword mode
 	var packetDetail models.PacketDetail
 
 	unmarshalErr := xml.Unmarshal(body, &packetDetail)
-	fmt.Print(string(body))
+	log.Println(string(body))
 	if unmarshalErr != nil {
 		return models.PacketDetail{}, unmarshalErr
 	}

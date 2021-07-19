@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"go-zasilkovna/models"
 	"io"
+	"log"
 	"net/http"
 )
 
@@ -23,7 +24,7 @@ func (c Client) CreatePacketClaim(claimAttributes models.ClaimAttributes) (model
 		return models.PacketIdDetail{}, err
 	}
 
-	fmt.Println(resp)
+	log.Println(resp)
 	body, err := io.ReadAll(resp.Body)
 	defer closeResponse(resp)
 
@@ -34,7 +35,7 @@ func (c Client) CreatePacketClaim(claimAttributes models.ClaimAttributes) (model
 	var packetIdDetail models.PacketIdDetail
 
 	unmarshalErr := xml.Unmarshal(body, &packetIdDetail)
-	fmt.Print(string(body))
+	log.Println(string(body))
 	if unmarshalErr != nil {
 		return models.PacketIdDetail{}, unmarshalErr
 	}

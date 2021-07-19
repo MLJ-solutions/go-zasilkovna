@@ -2,7 +2,6 @@ package models
 
 import (
 	"encoding/xml"
-	"fmt"
 	"gopkg.in/go-playground/validator.v9"
 )
 
@@ -25,8 +24,6 @@ func NewCourierTrackingUrls(Lang string, Url string) *CourierTrackingUrl {
 }
 
 func ValidateCourierTrackingUrl() (isValidated bool, errorsArray []validator.FieldError) {
-	fmt.Println("---CourierTrackingUrl---")
-
 	v := validator.New()
 	a := CourierTrackingUrl{
 		Lang: "English",

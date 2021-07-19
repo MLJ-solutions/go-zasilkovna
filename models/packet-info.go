@@ -2,7 +2,6 @@ package models
 
 import (
 	"encoding/xml"
-	"fmt"
 	"gopkg.in/go-playground/validator.v9"
 )
 
@@ -45,8 +44,6 @@ func NewPacketInfo(ApiPassword string, PacketId int) *PacketInfo {
 }
 
 func ValidatePacketInfo() (isValidated bool, errorsArray []validator.FieldError) {
-	fmt.Println("---CurrentStatusRecord---")
-
 	v := validator.New()
 	a := PacketInfo{
 		ApiPassword: "password",

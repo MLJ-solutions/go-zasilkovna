@@ -3,9 +3,9 @@ package main
 import (
 	"bytes"
 	"encoding/xml"
-	"fmt"
 	"go-zasilkovna/models"
 	"io"
+	"log"
 	"net/http"
 )
 
@@ -23,7 +23,7 @@ func (c Client) CreatePacket(packetAttributes models.PacketAttributes) (models.P
 		return models.PacketIdDetail{}, err
 	}
 
-	fmt.Println(resp)
+	log.Println(resp)
 	body, err := io.ReadAll(resp.Body)
 	defer closeResponse(resp)
 
@@ -34,7 +34,7 @@ func (c Client) CreatePacket(packetAttributes models.PacketAttributes) (models.P
 	var packetIdDetail models.PacketIdDetail
 
 	unmarshalErr := xml.Unmarshal(body, &packetIdDetail)
-	fmt.Print(string(body))
+	log.Println(string(body))
 	if unmarshalErr != nil {
 		return models.PacketIdDetail{}, unmarshalErr
 	}
@@ -56,7 +56,7 @@ func (c Client) PacketAttributesValid(packetAttributes models.PacketAttributes) 
 		return models.ErrorResponse{}, err
 	}
 
-	fmt.Println(resp)
+	log.Println(resp)
 	body, err := io.ReadAll(resp.Body)
 	defer closeResponse(resp)
 
@@ -67,8 +67,7 @@ func (c Client) PacketAttributesValid(packetAttributes models.PacketAttributes) 
 	var validationErrors models.ErrorResponse
 
 	unmarshalErr := xml.Unmarshal(body, &validationErrors)
-	fmt.Print("BODY")
-	fmt.Print(string(body))
+	log.Println(string(body))
 	if unmarshalErr != nil {
 		return models.ErrorResponse{}, unmarshalErr
 	}

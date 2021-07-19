@@ -1,7 +1,6 @@
 package models
 
 import (
-	"fmt"
 	"gopkg.in/go-playground/validator.v9"
 )
 
@@ -28,8 +27,6 @@ func NewAttribute(Key string, Value string) *Attribute {
 }
 
 func ValidateAttribute(key string, value string) (isValidated bool, errorsArray []validator.FieldError) {
-	fmt.Println("---Attribute---")
-
 	v := validator.New()
 	a := Attribute{
 		Key:   key,

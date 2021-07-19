@@ -2,7 +2,6 @@ package models
 
 import (
 	"encoding/xml"
-	"fmt"
 	"gopkg.in/go-playground/validator.v9"
 )
 
@@ -42,8 +41,6 @@ func NewCourierInfoItem(CourierId int, CourierName string, CourierNumbers []Cour
 }
 
 func ValidateCourierInfoItem() (isValidated bool, errorsArray []validator.FieldError) {
-	fmt.Println("---CourierInfoItem---")
-
 	v := validator.New()
 	a := CourierInfoItem{
 		CourierId:   10,

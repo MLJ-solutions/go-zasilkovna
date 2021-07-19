@@ -2,7 +2,6 @@ package models
 
 import (
 	"encoding/xml"
-	"fmt"
 	"gopkg.in/go-playground/validator.v9"
 	"time"
 )
@@ -64,8 +63,6 @@ func NewCurrentStatusRecord(DateTime ZasilkovnaDateTime, StatusCode int, CodeTex
 }
 
 func ValidateCurrentStatusRecord() (isValidated bool, errorsArray []validator.FieldError) {
-	fmt.Println("---CurrentStatusRecord---")
-
 	v := validator.New()
 	f := false
 	a := CurrentStatusRecord{

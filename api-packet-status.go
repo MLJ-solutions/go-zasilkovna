@@ -3,9 +3,9 @@ package main
 import (
 	"bytes"
 	"encoding/xml"
-	"fmt"
 	"go-zasilkovna/models"
 	"io"
+	"log"
 	"net/http"
 )
 
@@ -18,14 +18,12 @@ func (c Client) PacketStatus(packetId int) (models.CurrentStatusRecord, error) {
 		return models.CurrentStatusRecord{}, marshalErr
 	}
 
-	fmt.Println(string(requestBody))
-
 	resp, err := c.executeMethod(http.MethodPost, bytes.NewBuffer(requestBody))
 	if err != nil {
 		return models.CurrentStatusRecord{}, err
 	}
 
-	fmt.Println(resp)
+	log.Println(resp)
 	body, err := io.ReadAll(resp.Body)
 	defer closeResponse(resp)
 
@@ -36,7 +34,7 @@ func (c Client) PacketStatus(packetId int) (models.CurrentStatusRecord, error) {
 	var currentStatusRecord models.CurrentStatusRecord
 
 	unmarshalErr := xml.Unmarshal(body, &currentStatusRecord)
-	fmt.Print(string(body))
+	log.Println(string(body))
 	if unmarshalErr != nil {
 		return models.CurrentStatusRecord{}, unmarshalErr
 	}

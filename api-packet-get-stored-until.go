@@ -3,9 +3,9 @@ package main
 import (
 	"bytes"
 	"encoding/xml"
-	"fmt"
 	"go-zasilkovna/models"
 	"io"
+	"log"
 	"net/http"
 )
 
@@ -23,7 +23,7 @@ func (c Client) PacketGetStoredUntil(packetId int) (models.ZasilkovnaDate, error
 		return models.ZasilkovnaDate{}, err
 	}
 
-	fmt.Println(resp)
+	log.Println(resp)
 	body, err := io.ReadAll(resp.Body)
 	defer closeResponse(resp)
 
@@ -34,7 +34,7 @@ func (c Client) PacketGetStoredUntil(packetId int) (models.ZasilkovnaDate, error
 	var zasilkovnaDate models.ZasilkovnaDate
 
 	unmarshalErr := xml.Unmarshal(body, &zasilkovnaDate)
-	fmt.Print(string(body))
+	log.Println(string(body))
 	if unmarshalErr != nil {
 		return models.ZasilkovnaDate{}, unmarshalErr
 	}

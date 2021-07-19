@@ -9,8 +9,6 @@ import (
 	"sync"
 )
 
-// TODO !!!NEPOUŽÍVAT ZÁPIS, JEN ČTENÍ!!!
-
 const BasicUrl = "https://www.zasilkovna.cz/api/rest/"
 
 type Client struct {

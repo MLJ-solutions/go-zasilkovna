@@ -4,9 +4,9 @@ import (
 	"bytes"
 	"encoding/binary"
 	"encoding/xml"
-	"fmt"
 	"go-zasilkovna/models"
 	"io"
+	"log"
 	"net/http"
 )
 
@@ -26,7 +26,7 @@ func (c Client) BarcodePng(barcode string) (binary.ByteOrder, error) {
 		return nil, err
 	}
 
-	fmt.Println(resp)
+	log.Println(resp)
 	body, err := io.ReadAll(resp.Body)
 	defer closeResponse(resp)
 
@@ -37,7 +37,7 @@ func (c Client) BarcodePng(barcode string) (binary.ByteOrder, error) {
 	var binaryResult binary.ByteOrder
 
 	unmarshalErr := xml.Unmarshal(body, &binaryResult)
-	fmt.Print(string(body))
+	log.Println(string(body))
 	if unmarshalErr != nil {
 		return nil, unmarshalErr
 	}

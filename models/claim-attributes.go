@@ -2,7 +2,6 @@ package models
 
 import (
 	"encoding/xml"
-	"fmt"
 	"gopkg.in/go-playground/validator.v9"
 )
 
@@ -68,8 +67,6 @@ func NewClaimAttributes(Id int, Number string, Email string, Phone string, Value
 }
 
 func ValidateClaimAttributes() (isValidated bool, errorsArray []validator.FieldError) {
-	fmt.Println("---ClaimAttributes---")
-
 	v := validator.New()
 	a := ClaimAttributes{
 		Id:     10,

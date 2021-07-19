@@ -3,7 +3,6 @@ package main
 import (
 	"bytes"
 	"encoding/xml"
-	"fmt"
 	"go-zasilkovna/models"
 	"io"
 	"net/http"
@@ -36,6 +35,5 @@ func (c Client) PacketInfo(packetId int) (models.PacketInfoResponse, error) {
 		return models.PacketInfoResponse{}, unmarshalErr
 	}
 
-	fmt.Println("RETURN")
 	return response, nil
 }

@@ -2,8 +2,8 @@ package models
 
 import (
 	"encoding/xml"
-	"fmt"
 	"gopkg.in/go-playground/validator.v9"
+	"log"
 )
 
 type CreatePacket struct {
@@ -150,24 +150,22 @@ func NewPacketAttributes(Id int, Number string, Name string, Surname string,
 }
 
 func ValidatePacketAttributes() (isValidated bool, errorsArray []validator.FieldError) {
-	fmt.Println("---PacketAttributes---")
-
 	v := validator.New()
 
 	size := Size{
 		100, 30, 20,
 	}
 	sizeIsValidated, sizeErr := ValidateSize(size)
-	fmt.Println(sizeIsValidated)
-	fmt.Println(sizeErr)
+	log.Println(sizeIsValidated)
+	log.Println(sizeErr)
 
 	attribute := Attribute{
 		Key:   "Some Key",
 		Value: "Some Value",
 	}
 	attributeIsValidated, attributeErr := ValidateAttribute(attribute.Key, attribute.Value)
-	fmt.Println(attributeIsValidated)
-	fmt.Println(attributeErr)
+	log.Println(attributeIsValidated)
+	log.Println(attributeErr)
 
 	a := PacketAttributes{
 		Number:             "Some number",
@@ -184,20 +182,6 @@ func ValidatePacketAttributes() (isValidated bool, errorsArray []validator.Field
 		City:               "Some city",
 		Zip:                "Some packet's zip",
 		CarrierPickupPoint: "Some carrier's pickup point",
-		/*CustomsDeclaration: ItemCollection{
-			{Item: Item{
-				Attribute: attribute,
-			}},
-		},
-		Size: size,
-		AttributeCollection: AttributeCollection{
-			{Attribute: attribute},
-		},
-		Items: ItemCollection{
-			{Item: Item{
-				Attribute: attribute,
-			}},
-		},*/
 	}
 	err := v.Struct(a)
 	if err != nil { // If err contains errors, params are not validated

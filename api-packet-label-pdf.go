@@ -4,9 +4,9 @@ import (
 	"bytes"
 	"encoding/binary"
 	"encoding/xml"
-	"fmt"
 	"go-zasilkovna/models"
 	"io"
+	"log"
 	"net/http"
 )
 
@@ -25,7 +25,7 @@ func (c Client) PacketLabelPdf(packetIds models.Ids, format string, offset int) 
 		return nil, err
 	}
 
-	fmt.Println(resp)
+	log.Println(resp)
 	body, err := io.ReadAll(resp.Body)
 	defer closeResponse(resp)
 
@@ -36,7 +36,7 @@ func (c Client) PacketLabelPdf(packetIds models.Ids, format string, offset int) 
 	var binaryResult binary.ByteOrder
 
 	unmarshalErr := xml.Unmarshal(body, &binaryResult)
-	fmt.Print(string(body))
+	log.Println(string(body))
 	if unmarshalErr != nil {
 		return nil, unmarshalErr
 	}
