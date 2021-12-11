@@ -1,4 +1,4 @@
-module go-zasilkovna
+module github.com/MLJ-solutions/go-zasilkovna
 
 go 1.16
 
