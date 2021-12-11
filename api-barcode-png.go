@@ -1,10 +1,10 @@
-package main
+package go_zasilkovna
 
 import (
 	"bytes"
 	"encoding/binary"
 	"encoding/xml"
-	"go-zasilkovna/models"
+	"github.com/MLJ-solutions/go-zasilkovna/models"
 	"io"
 	"log"
 	"net/http"
