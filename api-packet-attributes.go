@@ -11,16 +11,16 @@ import (
 
 // CreatePacket Creates packet from PacketAttributes.
 // On success returns PacketIdDetail with information about the newly created packet.
-func (c Client) CreatePacket(packetAttributes models.PacketAttributes) (models.PacketIdDetail, error) {
+func (c Client) CreatePacket(packetAttributes models.PacketAttributes) (*models.CreatePacketResponse, error) {
 	createPacket := models.CreatePacket{ApiPassword: c.credsProvider.ApiKey, PacketAttributes: packetAttributes}
 	requestBody, marshalErr := xml.Marshal(createPacket)
 	if marshalErr != nil {
-		return models.PacketIdDetail{}, marshalErr
+		return nil, marshalErr
 	}
 
 	resp, err := c.executeMethod(http.MethodPost, bytes.NewBuffer(requestBody))
 	if err != nil {
-		return models.PacketIdDetail{}, err
+		return nil, err
 	}
 
 	log.Println(resp)
@@ -28,15 +28,15 @@ func (c Client) CreatePacket(packetAttributes models.PacketAttributes) (models.P
 	defer closeResponse(resp)
 
 	if err != nil {
-		return models.PacketIdDetail{}, err
+		return nil, err
 	}
 
-	var packetIdDetail models.PacketIdDetail
+	packetIdDetail := &models.CreatePacketResponse{}
 
-	unmarshalErr := xml.Unmarshal(body, &packetIdDetail)
+	unmarshalErr := xml.Unmarshal(body, packetIdDetail)
 	log.Println(string(body))
 	if unmarshalErr != nil {
-		return models.PacketIdDetail{}, unmarshalErr
+		return nil, unmarshalErr
 	}
 
 	return packetIdDetail, nil

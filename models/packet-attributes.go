@@ -6,6 +6,18 @@ import (
 	"log"
 )
 
+type CreatePacketResponse struct {
+	XMLName xml.Name           `xml:"response"`
+	Status  string             `xml:"status"`
+	Result  CreatePacketResult `xml:"result"`
+}
+
+type CreatePacketResult struct {
+	Id          int    `xml:"id"`
+	Barcode     string `xml:"barcode"`
+	BarcodeText string `xml:"barcodeText"`
+}
+
 type CreatePacket struct {
 	XMLName          xml.Name         `xml:"createPacket"`
 	ApiPassword      string           `xml:"apiPassword" validate:"required"`
