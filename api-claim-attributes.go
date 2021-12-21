@@ -12,16 +12,16 @@ import (
 
 // CreatePacketClaim Creates a claim assistant packet from ClaimAttributes.
 // On success returns PacketIdDetail with information about the newly created packet.
-func (c Client) CreatePacketClaim(claimAttributes models.ClaimAttributes) (models.PacketIdDetail, error) {
+func (c Client) CreatePacketClaim(claimAttributes models.ClaimAttributes) (*models.PacketIdDetail, error) {
 	createPacketClaim := models.CreatePacketClaim{ApiPassword: c.credsProvider.ApiKey, ClaimAttributes: claimAttributes}
 	requestBody, marshalErr := xml.Marshal(createPacketClaim)
 	if marshalErr != nil {
-		return models.PacketIdDetail{}, marshalErr
+		return nil, marshalErr
 	}
 
 	resp, err := c.executeMethod(http.MethodPost, bytes.NewBuffer(requestBody))
 	if err != nil {
-		return models.PacketIdDetail{}, err
+		return nil, err
 	}
 
 	log.Println(resp)
@@ -29,32 +29,33 @@ func (c Client) CreatePacketClaim(claimAttributes models.ClaimAttributes) (model
 	defer closeResponse(resp)
 
 	if err != nil {
-		return models.PacketIdDetail{}, err
+		return nil, err
 	}
 
-	var packetIdDetail models.PacketIdDetail
+	packetIdDetail := &models.PacketIdDetail{}
 
-	unmarshalErr := xml.Unmarshal(body, &packetIdDetail)
+	unmarshalErr := xml.Unmarshal(body, packetIdDetail)
 	log.Println(string(body))
 	if unmarshalErr != nil {
-		return models.PacketIdDetail{}, unmarshalErr
+		return nil, unmarshalErr
 	}
 
 	return packetIdDetail, nil
 }
 
 // ClaimAttributesValid Validates PacketAttributes.
-// On success (the attributes are valid) returns <status>ok</status>.
-func (c Client) ClaimAttributesValid(claimAttributes models.ClaimAttributes) (models.ErrorResponse, error) {
+// On success (the attributes are valid) returns <status>ok</status> `err.Status == ResponseStatusOk`.
+// On error (the attributes are NOT valid) returns <status>fault</status> as Rfc7807Error `err.Status == ResponseStatusFault`.
+func (c Client) ClaimAttributesValid(claimAttributes models.ClaimAttributes) error {
 	claimAttributesValid := models.ClaimAttributesValid{ApiPassword: c.credsProvider.ApiKey, ClaimAttributes: claimAttributes}
 	requestBody, marshalErr := xml.Marshal(claimAttributesValid)
 	if marshalErr != nil {
-		return models.ErrorResponse{}, marshalErr
+		return marshalErr
 	}
 
 	resp, err := c.executeMethod(http.MethodPost, bytes.NewBuffer(requestBody))
 	if err != nil {
-		return models.ErrorResponse{}, err
+		return err
 	}
 
 	fmt.Println(resp)
@@ -62,16 +63,16 @@ func (c Client) ClaimAttributesValid(claimAttributes models.ClaimAttributes) (mo
 	defer closeResponse(resp)
 
 	if err != nil {
-		return models.ErrorResponse{}, err
+		return err
 	}
 
-	var validationErrors models.ErrorResponse
+	validationErrors := &models.PacketAttributesFault{}
 
-	unmarshalErr := xml.Unmarshal(body, &validationErrors)
+	unmarshalErr := xml.Unmarshal(body, validationErrors)
 	fmt.Print(string(body))
 	if unmarshalErr != nil {
-		return models.ErrorResponse{}, unmarshalErr
+		return unmarshalErr
 	}
 
-	return validationErrors, nil
+	return validationErrors.ToRfc7807Error(200)
 }

@@ -26,7 +26,7 @@ func (c Client) executeMethod(method string, body io.Reader) (res *http.Response
 		return nil, errRequest
 	}
 
-	res, err = c.do(req) // todo handle
+	res, err = c.do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -45,17 +45,16 @@ func (c Client) executeMethod(method string, body io.Reader) (res *http.Response
 		return nil, err
 	}
 
-	var apiError ErrorResponse
+	var apiError PacketAttributesFault
 	unmarshalErr := xml.Unmarshal(all, &apiError)
 	if unmarshalErr != nil {
 		log.Panic(string(all))
 		return nil, unmarshalErr
 	}
 
-	log.Println(apiError.Errors)
+	log.Println(apiError)
 
 	return nil, apiError
-
 }
 
 func (c Client) constructUrl() (*url.URL, error) {

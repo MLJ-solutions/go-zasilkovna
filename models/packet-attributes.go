@@ -6,6 +6,11 @@ import (
 	"log"
 )
 
+const (
+	ResponseStatusOk    = "ok"
+	ResponseStatusFault = "fault"
+)
+
 type CreatePacketResponse struct {
 	XMLName xml.Name           `xml:"response"`
 	Status  string             `xml:"status"`

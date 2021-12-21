@@ -39,21 +39,26 @@ func (c Client) CreatePacket(packetAttributes models.PacketAttributes) (*models.
 		return nil, unmarshalErr
 	}
 
+	if packetIdDetail.Status != models.ResponseStatusOk {
+		return nil, unmarshalToErrorRfc7807(body, &models.PacketAttributesFault{})
+	}
+
 	return packetIdDetail, nil
 }
 
 // PacketAttributesValid Validates PacketAttributes.
-// On success (the attributes are valid) returns <status>ok</status>.
-func (c Client) PacketAttributesValid(packetAttributes models.PacketAttributes) (models.ErrorResponse, error) {
+// On success (the attributes are valid) returns <status>ok</status> `err.Status == ResponseStatusOk`.
+// On error (the attributes are NOT valid) returns <status>fault</status> as Rfc7807Error `err.Status == ResponseStatusFault`.
+func (c Client) PacketAttributesValid(packetAttributes models.PacketAttributes) error {
 	packetAttributesValid := models.PacketAttributesValid{ApiPassword: c.credsProvider.ApiKey, PacketAttributes: packetAttributes}
 	requestBody, marshalErr := xml.Marshal(packetAttributesValid)
 	if marshalErr != nil {
-		return models.ErrorResponse{}, marshalErr
+		return marshalErr
 	}
 
 	resp, err := c.executeMethod(http.MethodPost, bytes.NewBuffer(requestBody))
 	if err != nil {
-		return models.ErrorResponse{}, err
+		return err
 	}
 
 	log.Println(resp)
@@ -61,16 +66,16 @@ func (c Client) PacketAttributesValid(packetAttributes models.PacketAttributes) 
 	defer closeResponse(resp)
 
 	if err != nil {
-		return models.ErrorResponse{}, err
+		return err
 	}
 
-	var validationErrors models.ErrorResponse
+	validationErrors := &models.PacketAttributesFault{}
 
-	unmarshalErr := xml.Unmarshal(body, &validationErrors)
+	unmarshalErr := xml.Unmarshal(body, validationErrors)
 	log.Println(string(body))
 	if unmarshalErr != nil {
-		return models.ErrorResponse{}, unmarshalErr
+		return unmarshalErr
 	}
 
-	return validationErrors, nil
+	return validationErrors.ToRfc7807Error(200)
 }
