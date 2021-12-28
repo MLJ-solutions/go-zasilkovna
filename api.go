@@ -2,6 +2,7 @@ package go_zasilkovna
 
 import (
 	"encoding/xml"
+	"github.com/MLJ-solutions/go-zasilkovna/models"
 	"io"
 	"io/ioutil"
 	"log"
@@ -22,7 +23,7 @@ func (c Client) executeMethod(method string, body io.Reader) (res *http.Response
 	req, err := http.NewRequest(method, BasicUrl, body)
 	req.Header.Set("Content-Type", "text/xml")
 	if err != nil {
-		errRequest := ToErrorResponse(err)
+		errRequest := models.ToErrorResponse(err)
 		return nil, errRequest
 	}
 
@@ -45,7 +46,7 @@ func (c Client) executeMethod(method string, body io.Reader) (res *http.Response
 		return nil, err
 	}
 
-	var apiError PacketAttributesFault
+	var apiError models.PacketAttributesFault
 	unmarshalErr := xml.Unmarshal(all, &apiError)
 	if unmarshalErr != nil {
 		log.Panic(string(all))
