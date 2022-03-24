@@ -50,7 +50,9 @@ func (c Client) CreatePacket(packetAttributes models.PacketAttributes) (*models.
 // On success (the attributes are valid) returns <status>ok</status> `err.Status == ResponseStatusOk`.
 // On error (the attributes are NOT valid) returns <status>fault</status> as Rfc7807Error `err.Status == ResponseStatusFault`.
 func (c Client) PacketAttributesValid(packetAttributes models.PacketAttributes) error {
-	packetAttributesValid := models.PacketAttributesValid{ApiPassword: c.credsProvider.ApiKey, PacketAttributes: packetAttributes}
+	packetAttributesValid := models.PacketAttributesValid{
+		ApiPassword: c.credsProvider.ApiKey, PacketAttributes: packetAttributes,
+	}
 	requestBody, marshalErr := xml.Marshal(packetAttributesValid)
 	if marshalErr != nil {
 		return marshalErr
@@ -77,5 +79,9 @@ func (c Client) PacketAttributesValid(packetAttributes models.PacketAttributes) 
 		return unmarshalErr
 	}
 
-	return validationErrors.ToRfc7807Error(200)
+	if validationErrors.Status != models.ResponseStatusOk {
+		return unmarshalToErrorRfc7807(body, &models.PacketAttributesFault{})
+	}
+
+	return nil
 }
