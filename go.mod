@@ -1,6 +1,6 @@
 module github.com/MLJ-solutions/go-zasilkovna
 
-go 1.16
+go 1.21
 
 require (
 	github.com/go-playground/universal-translator v0.17.0 // indirect
